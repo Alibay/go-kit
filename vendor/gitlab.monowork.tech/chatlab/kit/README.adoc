@@ -1,0 +1,59 @@
+= kit: библиотека для решения общих бизнес и инфраструктурных задач
+Черновик, v1.0
+:toc:
+:toc-title: Содержание
+
+== Сборка
+
+```
+$ go build ./...
+```
+
+== Запуск тестов
+
+*unit тесты*
+
+```
+$ go test -count=1 ./...
+```
+
+*интеграционные тесты*
+
+```
+$ go test -count=1 -tags integration ./...
+```
+
+Для локального запуска интеграционных тестов необходима развернутая https://gitlab.monowork.tech/chatlab/infra[инфраструктура]
+
+== Локальная разработка
+
+необходимые утилиты:
+|===
+| Утилита | Версия
+|golang | 1.20+
+|make | 4.2.1
+|protoc| 3.17.3
+|===
+
+*Основные команды для локальной разработки:*
+
+```bash
+
+# полный билд со всеми артефактами
+make artifacts
+
+# билд сервиса
+make build
+
+# запуск unit-тестов
+make test
+
+# запуск интеграционных тестов (должна быть запущена локальная инфра)
+make test-integration
+```
+
+Дополнительные команды см. в `Makefile`
+
+== CI/CD
+
+См. https://gitlab.monowork.tech/devops/docs[DOPS] и описание https://gitlab.monowork.tech/devops/pipelines/-/tree/master/docs[pipelines]

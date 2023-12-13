@@ -1,0 +1,24 @@
+variables:
+  PIPELINELIB_VERSION: &PL_REF v0.3.8
+
+stages:
+  - test
+  - build
+
+include:
+  - project: devops/pipelines
+    ref: *PL_REF
+    file:
+      - settings.yaml
+      - lib/workflow.yaml
+#      - lib/lint/golangci-lint.yaml
+
+#golangci-lint:
+#  extends: .lint/golangci-lint
+#  variables:
+#  # Джоба вызывает команду golangci-lint run -v ${FLAGS}
+#  # В переменной можноуказать дополнительные флаги
+#  # https://golangci-lint.run/usage/configuration/#command-line-options
+#    FLAGS: "--color always"
+
+
