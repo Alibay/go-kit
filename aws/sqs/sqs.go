@@ -3,9 +3,11 @@ package sqs
 import (
 	"context"
 
+	"github.com/Alibay/go-kit/logger"
+
+	kit "github.com/Alibay/go-kit"
+	kitAws "github.com/Alibay/go-kit/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
-	"gitlab.monowork.tech/chatlab/kit"
-	kitAws "gitlab.monowork.tech/chatlab/kit/aws"
 )
 
 const (
@@ -33,14 +35,14 @@ type Config struct {
 }
 
 type Client struct {
-	logger    kit.CLoggerFunc
+	log       logger.CLoggerFunc
 	awsCfg    *kitAws.Config
 	sqsClient *sqs.Client
 }
 
-func NewClient(awsCfg *kitAws.Config, logger kit.CLoggerFunc) *Client {
+func NewClient(awsCfg *kitAws.Config, log logger.CLoggerFunc) *Client {
 	return &Client{
-		logger: logger,
+		log:    log,
 		awsCfg: awsCfg,
 	}
 }

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"testing"
 
+	kit "github.com/Alibay/go-kit"
 	kitAws "github.com/Alibay/go-kit/aws"
 	"github.com/stretchr/testify/suite"
-	"gitlab.monowork.tech/chatlab/kit"
 )
 
 type s3TestSuite struct {

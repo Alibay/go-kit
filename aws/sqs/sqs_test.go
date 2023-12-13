@@ -1,24 +1,27 @@
-///go:build dev
+//go:build dev
 
 package sqs
 
 import (
 	"testing"
 
+	"github.com/Alibay/go-kit/logger"
+
+	kit "github.com/Alibay/go-kit"
+	kitAws "github.com/Alibay/go-kit/aws"
+	kitTesting "github.com/Alibay/go-kit/testing"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/stretchr/testify/suite"
-	"gitlab.monowork.tech/chatlab/kit"
-	kitAws "gitlab.monowork.tech/chatlab/kit/aws"
 )
 
 type s3TestSuite struct {
-	kit.Suite
-	logger kit.CLoggerFunc
+	kitTesting.Suite
+	log logger.CLoggerFunc
 }
 
 func (s *s3TestSuite) SetupSuite() {
-	s.logger = func() kit.CLogger { return kit.L(kit.InitLogger(&kit.LogConfig{Level: kit.TraceLevel})) }
-	s.Suite.Init(s.logger)
+	s.log = func() logger.CLogger { return logger.L(logger.InitLogger(&logger.LogConfig{Level: logger.TraceLevel})) }
+	s.Suite.Init(s.log)
 }
 
 func TestS3Suite(t *testing.T) {
@@ -36,7 +39,7 @@ var (
 
 func (s *s3TestSuite) Test_Init() {
 	// init client
-	client := NewClient(awsCfg, s.logger)
+	client := NewClient(awsCfg, s.log)
 	s.NoError(client.Init(s.Ctx))
 	s.NotEmpty(client.sqsClient)
 
