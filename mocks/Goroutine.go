@@ -5,8 +5,8 @@ package mocks
 import (
 	context "context"
 
+	kit "github.com/Alibay/go-kit"
 	goroutine "github.com/Alibay/go-kit/goroutine"
-	logger "github.com/Alibay/go-kit/logger"
 
 	mock "github.com/stretchr/testify/mock"
 
@@ -55,13 +55,13 @@ func (_m *Goroutine) Mth(method string) goroutine.Goroutine {
 	return r0
 }
 
-// WithLogger provides a mock function with given fields: _a0
-func (_m *Goroutine) WithLogger(_a0 logger.CLogger) goroutine.Goroutine {
-	ret := _m.Called(_a0)
+// WithLogger provides a mock function with given fields: logger
+func (_m *Goroutine) WithLogger(logger kit.CLogger) goroutine.Goroutine {
+	ret := _m.Called(logger)
 
 	var r0 goroutine.Goroutine
-	if rf, ok := ret.Get(0).(func(logger.CLogger) goroutine.Goroutine); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(kit.CLogger) goroutine.Goroutine); ok {
+		r0 = rf(logger)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(goroutine.Goroutine)
@@ -72,11 +72,11 @@ func (_m *Goroutine) WithLogger(_a0 logger.CLogger) goroutine.Goroutine {
 }
 
 // WithLoggerFn provides a mock function with given fields: loggerFn
-func (_m *Goroutine) WithLoggerFn(loggerFn logger.CLoggerFunc) goroutine.Goroutine {
+func (_m *Goroutine) WithLoggerFn(loggerFn kit.CLoggerFunc) goroutine.Goroutine {
 	ret := _m.Called(loggerFn)
 
 	var r0 goroutine.Goroutine
-	if rf, ok := ret.Get(0).(func(logger.CLoggerFunc) goroutine.Goroutine); ok {
+	if rf, ok := ret.Get(0).(func(kit.CLoggerFunc) goroutine.Goroutine); ok {
 		r0 = rf(loggerFn)
 	} else {
 		if ret.Get(0) != nil {

@@ -7,9 +7,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/Alibay/go-kit/logger"
-
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	"github.com/Alibay/go-kit/goroutine"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
@@ -18,21 +16,21 @@ import (
 )
 
 type prometheusMetricsSrv struct {
-	log        logger.CLoggerFunc
+	logger     kit.CLoggerFunc
 	registerer *prometheus.Registry
 	router     *mux.Router
 	httpSrv    *http.Server
 }
 
-func NewMetricsServer(logger logger.CLoggerFunc) MetricsServer {
+func NewMetricsServer(logger kit.CLoggerFunc) MetricsServer {
 	srv := &prometheusMetricsSrv{
-		log: logger,
+		logger: logger,
 	}
 	return srv
 }
 
-func (s *prometheusMetricsSrv) l() logger.CLogger {
-	return s.log().Pr("http").Cmp("prometheus")
+func (s *prometheusMetricsSrv) l() kit.CLogger {
+	return s.logger().Pr("http").Cmp("prometheus")
 }
 
 func (s *prometheusMetricsSrv) Init(config *Config, metricProviders ...MetricsProvider) error {
@@ -79,7 +77,7 @@ func (s *prometheusMetricsSrv) Init(config *Config, metricProviders ...MetricsPr
 
 func (s *prometheusMetricsSrv) Listen() {
 	goroutine.New().
-		WithLoggerFn(s.log).
+		WithLoggerFn(s.logger).
 		WithRetry(goroutine.Unrestricted).
 		Go(context.Background(),
 			func() {

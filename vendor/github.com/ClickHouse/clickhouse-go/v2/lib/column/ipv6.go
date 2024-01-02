@@ -18,6 +18,7 @@
 package column
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"github.com/ClickHouse/ch-go/proto"
 	"net"
@@ -231,6 +232,18 @@ func (col *IPv6) Append(v any) (nulls []uint8, err error) {
 			}
 		}
 	default:
+		if valuer, ok := v.(driver.Valuer); ok {
+			val, err := valuer.Value()
+			if err != nil {
+				return nil, &ColumnConverterError{
+					Op:   "Append",
+					To:   "IPv6",
+					From: fmt.Sprintf("%T", v),
+					Hint: fmt.Sprintf("could not get driver.Valuer value, try using %s", col.Type()),
+				}
+			}
+			return col.Append(val)
+		}
 		return nil, &ColumnConverterError{
 			Op:   "Append",
 			To:   "IPv6",
@@ -315,6 +328,18 @@ func (col *IPv6) AppendRow(v any) (err error) {
 	case nil:
 		col.col.Append([16]byte{})
 	default:
+		if valuer, ok := v.(driver.Valuer); ok {
+			val, err := valuer.Value()
+			if err != nil {
+				return &ColumnConverterError{
+					Op:   "AppendRow",
+					To:   "IPv6",
+					From: fmt.Sprintf("%T", v),
+					Hint: fmt.Sprintf("could not get driver.Valuer value, try using %s", col.Type()),
+				}
+			}
+			return col.AppendRow(val)
+		}
 		return &ColumnConverterError{
 			Op:   "AppendRow",
 			To:   "IPv6",
@@ -333,6 +358,10 @@ func (col *IPv6) Encode(buffer *proto.Buffer) {
 }
 
 func IPv6ToBytes(ip net.IP) [16]byte {
+	if ip == nil {
+		return [16]byte{}
+	}
+
 	if len(ip) == 4 {
 		ip = ip.To16()
 	}

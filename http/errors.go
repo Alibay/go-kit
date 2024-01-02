@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 )
 
 const (

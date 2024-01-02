@@ -5,14 +5,12 @@ import (
 	"net/http"
 	"testing"
 
-	kit "github.com/Alibay/go-kit"
-
-	kitTesting "github.com/Alibay/go-kit/testing"
+	"github.com/Alibay/go-kit"
 	"github.com/stretchr/testify/suite"
 )
 
 type policyManagerTestSuite struct {
-	kitTesting.Suite
+	kit.Suite
 	policyManager ResourcePolicyManager
 }
 

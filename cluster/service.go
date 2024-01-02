@@ -9,15 +9,10 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/Alibay/go-kit/config"
-
-	"github.com/Alibay/go-kit/storage/pg"
-
-	"github.com/Alibay/go-kit/logger"
-
-	kit "github.com/Alibay/go-kit"
-	"github.com/Alibay/go-kit/storage/clickhouse"
-	"github.com/Alibay/go-kit/storage/migration"
+	"github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit/storages/clickhouse"
+	"github.com/Alibay/go-kit/storages/migration"
+	kitStorage "github.com/Alibay/go-kit/storages/pg"
 	"github.com/spf13/cobra"
 )
 
@@ -58,7 +53,7 @@ type ServiceInstance[TCfg any] struct {
 	rootCmd      *cobra.Command // rootCmd root command
 	confPathEnv  *string        // confPathEnv env var name of config path (optional)
 	migSourceEnv *string        // migSourceEnv env var name of migration path (optional)
-	log          *logger.Logger
+	logger       *kit.Logger
 }
 
 func New[TCfg any](svcCode string, bootstrap Bootstrap) *ServiceInstance[TCfg] {
@@ -66,7 +61,7 @@ func New[TCfg any](svcCode string, bootstrap Bootstrap) *ServiceInstance[TCfg] {
 	s := &ServiceInstance[TCfg]{
 		bootstrap: bootstrap,
 		svcCode:   svcCode,
-		log:       logger.InitLogger(&logger.LogConfig{Level: logger.TraceLevel, Format: logger.FormatterJson}),
+		logger:    kit.InitLogger(&kit.LogConfig{Level: kit.TraceLevel, Format: kit.FormatterJson}),
 	}
 
 	// init root command
@@ -92,7 +87,7 @@ func New[TCfg any](svcCode string, bootstrap Bootstrap) *ServiceInstance[TCfg] {
 	return s
 }
 
-func (s *ServiceInstance[TCfg]) l() logger.CLogger {
+func (s *ServiceInstance[TCfg]) l() kit.CLogger {
 	return s.GetLogger()()
 }
 
@@ -195,16 +190,16 @@ func (s *ServiceInstance[TCfg]) Execute() error {
 	return s.rootCmd.Execute()
 }
 
-func (s *ServiceInstance[TCfg]) GetLogger() logger.CLoggerFunc {
-	return func() logger.CLogger {
-		return logger.L(s.log).Srv(s.svcCode).Node(s.nodeId)
+func (s *ServiceInstance[TCfg]) GetLogger() kit.CLoggerFunc {
+	return func() kit.CLogger {
+		return kit.L(s.logger).Srv(s.svcCode).Node(s.nodeId)
 	}
 }
 
 func (s *ServiceInstance[TCfg]) loadConfig(cmd *cobra.Command) (*TCfg, error) {
 	l := s.l().Mth("load-config")
 
-	configLoader := config.NewConfigLoader[TCfg]()
+	configLoader := kit.NewConfigLoader[TCfg]()
 	var path string
 
 	// get from cmd flag
@@ -327,7 +322,7 @@ func (s *ServiceInstance[TCfg]) executePgCmd(cmd *cobra.Command, getDbConfigFn f
 
 	// build function opening database
 	openDb := func() (*sql.DB, error) {
-		pg, err := pg.Open(dbConfig.(*pg.DbConfig), s.GetLogger())
+		pg, err := kitStorage.Open(dbConfig.(*kitStorage.DbConfig), s.GetLogger())
 		if err != nil {
 			return nil, err
 		}

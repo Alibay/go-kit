@@ -1,7 +1,7 @@
 package monitoring
 
 import (
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

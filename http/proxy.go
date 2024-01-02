@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"net/textproto"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 )
 
 // ProxyConfig is proxy http configuration

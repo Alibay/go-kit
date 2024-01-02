@@ -7,14 +7,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Alibay/go-kit/logger"
+	"github.com/Alibay/go-kit"
 	"github.com/stretchr/testify/assert"
 )
 
 var (
-	log  = logger.InitLogger(&logger.LogConfig{Level: logger.TraceLevel})
-	logf = func() logger.CLogger {
-		return logger.L(log)
+	logger = kit.InitLogger(&kit.LogConfig{Level: kit.TraceLevel})
+	logf   = func() kit.CLogger {
+		return kit.L(logger)
 	}
 )
 

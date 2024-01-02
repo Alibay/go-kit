@@ -6,9 +6,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/Alibay/go-kit/logger"
-
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	kitAws "github.com/Alibay/go-kit/aws"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -41,23 +39,23 @@ type Config struct {
 }
 
 type Client struct {
-	log             logger.CLoggerFunc
+	logger          kit.CLoggerFunc
 	awsCfg          *kitAws.Config
 	s3Cfg           *Config
 	s3Client        *s3.Client
 	s3PresignClient *s3.PresignClient
 }
 
-func NewClient(awsCfg *kitAws.Config, s3Cfg *Config, log logger.CLoggerFunc) *Client {
+func NewClient(awsCfg *kitAws.Config, s3Cfg *Config, logger kit.CLoggerFunc) *Client {
 	return &Client{
-		log:    log,
+		logger: logger,
 		awsCfg: awsCfg,
 		s3Cfg:  s3Cfg,
 	}
 }
 
-func (c *Client) l() logger.CLogger {
-	return c.log().Cmp("s3")
+func (c *Client) l() kit.CLogger {
+	return c.logger().Cmp("s3")
 }
 
 func (c *Client) Init(ctx context.Context) error {

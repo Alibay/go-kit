@@ -3,7 +3,7 @@ package aws
 import (
 	"context"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsCfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"

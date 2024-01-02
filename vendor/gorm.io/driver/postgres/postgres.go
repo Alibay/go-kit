@@ -3,11 +3,11 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
+	"github.com/jackc/pgx/v5"
 	"regexp"
 	"strconv"
 	"strings"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/stdlib"
 	"gorm.io/gorm"
 	"gorm.io/gorm/callbacks"
@@ -24,7 +24,6 @@ type Dialector struct {
 type Config struct {
 	DriverName           string
 	DSN                  string
-	WithoutQuotingCheck  bool
 	PreferSimpleProtocol bool
 	WithoutReturning     bool
 	Conn                 gorm.ConnPool
@@ -47,7 +46,7 @@ var timeZoneMatcher = regexp.MustCompile("(time_zone|TimeZone)=(.*?)($|&| )")
 func (dialector Dialector) Initialize(db *gorm.DB) (err error) {
 	callbackConfig := &callbacks.Config{
 		CreateClauses: []string{"INSERT", "VALUES", "ON CONFLICT"},
-		UpdateClauses: []string{"UPDATE", "SET", "FROM", "WHERE"},
+		UpdateClauses: []string{"UPDATE", "SET", "WHERE"},
 		DeleteClauses: []string{"DELETE", "FROM", "WHERE"},
 	}
 	// register callbacks
@@ -99,11 +98,6 @@ func (dialector Dialector) BindVarTo(writer clause.Writer, stmt *gorm.Statement,
 }
 
 func (dialector Dialector) QuoteTo(writer clause.Writer, str string) {
-	if dialector.WithoutQuotingCheck {
-		writer.WriteString(str)
-		return
-	}
-
 	var (
 		underQuoted, selfQuoted bool
 		continuousBacktick      int8

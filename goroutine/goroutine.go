@@ -4,8 +4,7 @@ import (
 	"context"
 	"time"
 
-	kit "github.com/Alibay/go-kit"
-	"github.com/Alibay/go-kit/logger"
+	"github.com/Alibay/go-kit"
 )
 
 const (
@@ -18,9 +17,9 @@ type Goroutine interface {
 	// Go executes a f func as a goroutine
 	Go(ctx context.Context, f func())
 	// WithLogger allows to specify prepared logger
-	WithLogger(logger logger.CLogger) Goroutine
+	WithLogger(logger kit.CLogger) Goroutine
 	// WithLoggerFn allows to specify logger func
-	WithLoggerFn(loggerFn logger.CLoggerFunc) Goroutine
+	WithLoggerFn(loggerFn kit.CLoggerFunc) Goroutine
 	// WithRetry allows to specify retry count
 	// if retry less than 0, number of retries isn't restricted
 	WithRetry(retry int) Goroutine
@@ -35,8 +34,8 @@ type Goroutine interface {
 }
 
 type goroutine struct {
-	logger   logger.CLogger
-	loggerFn logger.CLoggerFunc
+	logger   kit.CLogger
+	loggerFn kit.CLoggerFunc
 	retry    int
 	mth, cmp string
 	delay    time.Duration
@@ -48,12 +47,12 @@ func New() Goroutine {
 	}
 }
 
-func (g *goroutine) WithLogger(logger logger.CLogger) Goroutine {
+func (g *goroutine) WithLogger(logger kit.CLogger) Goroutine {
 	g.logger = logger
 	return g
 }
 
-func (g *goroutine) WithLoggerFn(loggerFn logger.CLoggerFunc) Goroutine {
+func (g *goroutine) WithLoggerFn(loggerFn kit.CLoggerFunc) Goroutine {
 	g.loggerFn = loggerFn
 	return g
 }
@@ -90,7 +89,7 @@ func (g *goroutine) Go(ctx context.Context, f func()) {
 	}
 
 	// define logger params
-	var logger logger.CLogger
+	var logger kit.CLogger
 	if g.logger != nil {
 		logger = g.logger.C(ctx)
 	} else {

@@ -1,4 +1,4 @@
-package go_kit
+package kit
 
 import (
 	"context"

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 )
 
 func (s *Server) loggingMiddleware(next http.Handler) http.Handler {

@@ -3,8 +3,8 @@
 package mocks
 
 import (
+	kit "github.com/Alibay/go-kit"
 	goroutine "github.com/Alibay/go-kit/goroutine"
-	logger "github.com/Alibay/go-kit/logger"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -86,13 +86,13 @@ func (_m *ErrGroup) Wait() error {
 	return r0
 }
 
-// WithLogger provides a mock function with given fields: _a0
-func (_m *ErrGroup) WithLogger(_a0 logger.CLogger) goroutine.ErrGroup {
-	ret := _m.Called(_a0)
+// WithLogger provides a mock function with given fields: logger
+func (_m *ErrGroup) WithLogger(logger kit.CLogger) goroutine.ErrGroup {
+	ret := _m.Called(logger)
 
 	var r0 goroutine.ErrGroup
-	if rf, ok := ret.Get(0).(func(logger.CLogger) goroutine.ErrGroup); ok {
-		r0 = rf(_a0)
+	if rf, ok := ret.Get(0).(func(kit.CLogger) goroutine.ErrGroup); ok {
+		r0 = rf(logger)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(goroutine.ErrGroup)
@@ -103,11 +103,11 @@ func (_m *ErrGroup) WithLogger(_a0 logger.CLogger) goroutine.ErrGroup {
 }
 
 // WithLoggerFn provides a mock function with given fields: loggerFn
-func (_m *ErrGroup) WithLoggerFn(loggerFn logger.CLoggerFunc) goroutine.ErrGroup {
+func (_m *ErrGroup) WithLoggerFn(loggerFn kit.CLoggerFunc) goroutine.ErrGroup {
 	ret := _m.Called(loggerFn)
 
 	var r0 goroutine.ErrGroup
-	if rf, ok := ret.Get(0).(func(logger.CLoggerFunc) goroutine.ErrGroup); ok {
+	if rf, ok := ret.Get(0).(func(kit.CLoggerFunc) goroutine.ErrGroup); ok {
 		r0 = rf(loggerFn)
 	} else {
 		if ret.Get(0) != nil {

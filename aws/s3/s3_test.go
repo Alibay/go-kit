@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	kitAws "github.com/Alibay/go-kit/aws"
 	"github.com/stretchr/testify/suite"
 )

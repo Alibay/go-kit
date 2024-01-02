@@ -1,0 +1,53 @@
+= kit: a common purpose library
+Черновик, v1.0
+:toc:
+:toc-title: Content
+
+== Build
+
+```
+$ go build ./...
+```
+
+== Running tests
+
+*unit tests*
+
+```
+$ go test -count=1 ./...
+```
+
+*integration tests*
+
+```
+$ go test -count=1 -tags integration ./...
+```
+
+
+
+== Local development
+
+required utils:
+|===
+| Util | Version
+|golang | 1.20+
+|make | 4.2.1
+|protoc| 3.17.3
+|===
+
+*Major commands for the local development:*
+
+```bash
+
+make artifacts
+
+make build
+
+make test
+
+make test-integration
+```
+
+Additional commands see `Makefile`
+
+== CI/CD

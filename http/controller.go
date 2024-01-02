@@ -13,9 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Alibay/go-kit/logger"
-
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	"github.com/gorilla/mux"
 )
 
@@ -51,7 +49,7 @@ type Controller interface {
 
 // BaseController is a base controller implementation
 type BaseController struct {
-	Logger logger.CLoggerFunc
+	Logger kit.CLoggerFunc
 }
 
 var MediaContentTypes = [...]string{

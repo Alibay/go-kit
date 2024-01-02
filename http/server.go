@@ -7,9 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Alibay/go-kit/logger"
-
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 	"github.com/Alibay/go-kit/goroutine"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
@@ -39,7 +37,7 @@ type Server struct {
 	Srv        *http.Server        // Srv - internal server
 	RootRouter *mux.Router         // RootRouter - root router
 	WsUpgrader *websocket.Upgrader // WsUpgrader - websocket upgrader
-	logger     logger.CLoggerFunc  // logger
+	logger     kit.CLoggerFunc     // logger
 }
 
 type RouteSetter interface {
@@ -61,7 +59,7 @@ func getOptions(cfg *Config) cors.Options {
 	}
 }
 
-func NewHttpServer(cfg *Config, logger logger.CLoggerFunc) *Server {
+func NewHttpServer(cfg *Config, logger kit.CLoggerFunc) *Server {
 
 	// define router
 	r := mux.NewRouter()

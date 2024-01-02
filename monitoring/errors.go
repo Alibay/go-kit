@@ -1,6 +1,6 @@
 package monitoring
 
-import kit "github.com/Alibay/go-kit"
+import "github.com/Alibay/go-kit"
 
 const (
 	ErrCodePrometheusRegisterGoMetrics      = "MON-001"

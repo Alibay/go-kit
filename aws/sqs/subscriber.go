@@ -4,25 +4,24 @@ import (
 	"context"
 	"time"
 
+	"github.com/Alibay/go-kit"
 	"github.com/Alibay/go-kit/goroutine"
-	"github.com/Alibay/go-kit/logger"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 )
 
 type Subscriber struct {
-	log       logger.CLoggerFunc
+	logger    kit.CLoggerFunc
 	client    *Client
 	queueName string
 	config    *Config
 	receiver  chan types.Message
 }
 
-func NewSubscriber(client *Client, cfg *Config, queueName string, receiver chan types.Message, log logger.CLoggerFunc) *Subscriber {
+func NewSubscriber(client *Client, cfg *Config, queueName string, receiver chan types.Message, logger kit.CLoggerFunc) *Subscriber {
 	return &Subscriber{
-		log:       log,
+		logger:    logger,
 		client:    client,
 		queueName: queueName,
 		config:    cfg,
@@ -30,8 +29,8 @@ func NewSubscriber(client *Client, cfg *Config, queueName string, receiver chan 
 	}
 }
 
-func (s *Subscriber) l() logger.CLogger {
-	return s.log().Cmp("sqs-sub")
+func (s *Subscriber) l() kit.CLogger {
+	return s.logger().Cmp("sqs-sub")
 }
 
 func (s *Subscriber) Run(ctx context.Context) error {

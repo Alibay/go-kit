@@ -1,5 +1,6 @@
-package go_kit
+package kit
 
+// ConvertSlice is a generic function to convert one slice to another with help of converter func
 func ConvertSlice[TSrc any, TRes any](src []*TSrc, converter func(*TSrc) *TRes) []*TRes {
 	r := make([]*TRes, 0, len(src))
 	for _, i := range src {
@@ -8,6 +9,7 @@ func ConvertSlice[TSrc any, TRes any](src []*TSrc, converter func(*TSrc) *TRes) 
 	return r
 }
 
+// GroupBy groups by slice by the key
 func GroupBy[TItem any, TKey comparable](slice []TItem, keyFn func(TItem) TKey) map[TKey][]TItem {
 	r := make(map[TKey][]TItem)
 	for _, i := range slice {
@@ -49,6 +51,7 @@ func ForAll[TItem any](slice []TItem, fn func(TItem)) []TItem {
 	return slice
 }
 
+// First returns selected by condition item or default
 func First[TItem any](slice []*TItem, selectFn func(*TItem) bool) *TItem {
 	for _, i := range slice {
 		if selectFn(i) {
@@ -58,6 +61,7 @@ func First[TItem any](slice []*TItem, selectFn func(*TItem) bool) *TItem {
 	return GetDefault[*TItem]()
 }
 
+// GetDefault get default value for type
 func GetDefault[T any]() T {
 	var result T
 	return result

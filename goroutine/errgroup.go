@@ -4,8 +4,7 @@ import (
 	"context"
 	"sync"
 
-	kit "github.com/Alibay/go-kit"
-	"github.com/Alibay/go-kit/logger"
+	"github.com/Alibay/go-kit"
 )
 
 // ErrGroup is a replica of a standard errgroup with panic handling and custom logging
@@ -25,9 +24,9 @@ type ErrGroup interface {
 	// CancelFunc returns cancel function defined by cancelled context
 	CancelFunc() func()
 	// WithLogger allows to specify prepared logger
-	WithLogger(logger logger.CLogger) ErrGroup
+	WithLogger(logger kit.CLogger) ErrGroup
 	// WithLoggerFn allows to specify logger func
-	WithLoggerFn(loggerFn logger.CLoggerFunc) ErrGroup
+	WithLoggerFn(loggerFn kit.CLoggerFunc) ErrGroup
 	// Mth allows to specify method to log in case of panic
 	// it works only for logger func
 	Mth(method string) ErrGroup
@@ -41,8 +40,8 @@ type errGroup struct {
 	wg       sync.WaitGroup
 	errOnce  sync.Once
 	err      error
-	logger   logger.CLogger
-	loggerFn logger.CLoggerFunc
+	logger   kit.CLogger
+	loggerFn kit.CLoggerFunc
 	ctx      context.Context
 	mth, cmp string
 }
@@ -57,12 +56,12 @@ func NewGroup(ctx context.Context) ErrGroup {
 	return &errGroup{cancel: cancel, ctx: ctx}
 }
 
-func (g *errGroup) WithLogger(logger logger.CLogger) ErrGroup {
+func (g *errGroup) WithLogger(logger kit.CLogger) ErrGroup {
 	g.logger = logger
 	return g
 }
 
-func (g *errGroup) WithLoggerFn(loggerFn logger.CLoggerFunc) ErrGroup {
+func (g *errGroup) WithLoggerFn(loggerFn kit.CLoggerFunc) ErrGroup {
 	g.loggerFn = loggerFn
 	return g
 }
@@ -103,7 +102,7 @@ func (g *errGroup) Go(f func() error) {
 	}
 
 	// define logger params
-	var logger logger.CLogger
+	var logger kit.CLogger
 	if g.logger != nil {
 		logger = g.logger.C(g.ctx)
 	} else {

@@ -3,7 +3,7 @@ package goroutine
 import (
 	"context"
 
-	kit "github.com/Alibay/go-kit"
+	"github.com/Alibay/go-kit"
 )
 
 const (
